@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ApiService } from '../@service/api.service';
 import { Task } from '../@interface/task';
@@ -10,7 +10,6 @@ import { Task } from '../@interface/task';
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit{
-
   tasks$!: Observable<Task[]>;
   task_form!: FormGroup;
 
@@ -22,11 +21,34 @@ export class TaskListComponent implements OnInit{
       title: '',
       content: ''
     });
+    // Set validators for fields.
+    this.task_form.controls["title"].setValidators([Validators.required]);
+    this.task_form.controls["content"].setValidators([Validators.required]);
   }
 
   onSubmit() {
     // Create the Task
     this.apiService.postTask(this.task_form.value)
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.getTasks();
+        }
+      )
+  }
+
+  deleteTask(task_id: number) {
+    this.apiService.deleteTask(task_id)
+      .subscribe(
+        (response) => {
+          console.log(response);
+          this.getTasks();
+        }
+      )
+  }
+
+  updateTask(the_task: Task) {
+    this.apiService.putTask(the_task)
       .subscribe(
         (response) => {
           console.log(response);
