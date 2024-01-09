@@ -25,7 +25,7 @@ FROM nginx:stable-alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # copy the compiled app from the builder image to the NGINX public folder
-#COPY --from=builder /app/angular-app/dist/out /usr/share/nginx/html
+COPY --from=builder /app/angular-app/dist/out /usr/share/nginx/html
 
 # copy the NGINX configuration file to the Docker
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
