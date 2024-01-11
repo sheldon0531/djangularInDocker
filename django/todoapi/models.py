@@ -4,6 +4,7 @@ from datetime import date
 # Create your models here.
 class Task(models.Model):
     """Stores a task"""
+    created_by = models.CharField(max_length=200)
     title = models.CharField(max_length=50)
     content = models.CharField(max_length=50)
     # Date the task was created
