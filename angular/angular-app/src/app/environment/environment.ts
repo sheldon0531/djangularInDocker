@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  apiUrl: 'http://localhost/api',
   auth: {
     clientID: import.meta.env.NG_APP_AUTH0_CLIENTID,
     domain: import.meta.env.NG_APP_AUTH0_DOMAIN,

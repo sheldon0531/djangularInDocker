@@ -11,6 +11,8 @@ services:
     container_name: dj
     networks: 
       - bridge
+    environment:
+      - DJANGO_SETTINGS=dev
     build:
       context: .
       dockerfile: ./django/Dockerfile

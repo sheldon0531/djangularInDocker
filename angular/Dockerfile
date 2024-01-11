@@ -17,6 +17,9 @@ COPY env/ng /app/.env
 # Copy app files.
 COPY angular/ /app
 
+# Default build configuration
+ARG configuration=production
+
 # Build app
 RUN npm run build --prefix angular-app -- --output-path=./dist/out
 

@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Task } from '../@interface/task';
 import { AuthService } from 'src/auth/auth.service';
+import { environment } from '../environment/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class ApiService {
-  API_URL = 'http://localhost/api';
+  API_URL = environment.apiUrl;
 
   constructor(private http: HttpClient, private auth: AuthService) { }
 
