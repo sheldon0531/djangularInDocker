@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from dotenv import load_dotenv
 import json
 from urllib import request
 from cryptography.x509 import load_pem_x509_certificate
@@ -18,13 +19,13 @@ from cryptography.hazmat.backends import default_backend
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DJ_SECRET']
+SECRET_KEY = os.getenv('DJ_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -85,10 +86,10 @@ WSGI_APPLICATION = 'todoproj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['DB_NAME'],
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASS'],
-        'HOST': 'db',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASS'),
+        'HOST': os.getenv('DB_HOST'),
         'PORT': 5432,
     }
 }
@@ -148,8 +149,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Auth0 Settings
-AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
-API_IDENTIFIER = os.environ['AUTH0_IDENTIFIER']
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
+API_IDENTIFIER = os.getenv('AUTH0_IDENTIFIER')
 PUBLIC_KEY = None
 JWT_ISSUER = None
 

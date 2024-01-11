@@ -6,13 +6,16 @@ RUN mkdir /app
 WORKDIR /app
 
 # Copy app dependencies.
-COPY angular-app/package.json angular-app/package-lock.json /app/angular-app/
+COPY angular/angular-app/package.json angular/angular-app/package-lock.json /app/angular-app/
 
 # Install app dependencies.
 RUN npm install --prefix angular-app
 
+# Copy .env
+COPY env/ng /app/.env
+
 # Copy app files.
-COPY . /app
+COPY angular/ /app
 
 # Build app
 RUN npm run build --prefix angular-app -- --output-path=./dist/out
@@ -28,5 +31,5 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/angular-app/dist/out /usr/share/nginx/html
 
 # copy the NGINX configuration file to the Docker
-COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY angular/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 

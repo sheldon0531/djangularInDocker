@@ -3,7 +3,7 @@ FROM python:3.7
 # Set environment variables
 ENV PYTHONUNBUFFERED 1
 
-COPY requirements.txt /
+COPY django/requirements.txt /
 
 # Install dependencies.
 RUN pip install -r /requirements.txt
@@ -12,7 +12,10 @@ RUN pip install -r /requirements.txt
 RUN mkdir /code
 WORKDIR /code
 
+# Copy .env
+COPY env/dj /code/.env
+
 # Copy project code.
-COPY . /code/
+COPY django/ /code/
 
 EXPOSE 80

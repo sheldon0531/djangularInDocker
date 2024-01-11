@@ -12,7 +12,6 @@ import { Task } from '../@interface/task';
 export class TaskListComponent implements OnInit{
   tasks$!: Observable<Task[]>;
   task_form!: FormGroup;
-
   constructor(private apiService: ApiService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
