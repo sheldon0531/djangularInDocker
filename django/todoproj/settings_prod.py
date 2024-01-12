@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('DJ_SECRET')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'sheldon0531.asuscomm.com',
+    '*',
 ]
 
 
@@ -141,6 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Auth0 Settings
 AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')

@@ -17,22 +17,27 @@ COPY env/ng /app/.env
 # Copy app files.
 COPY angular/ /app
 
-# Default build configuration
-ARG configuration=production
-
 # Build app
-RUN npm run build --prefix angular-app -- --output-path=./dist/out
+WORKDIR /app/angular-app
+RUN npm run build
 
 ### Stage 2: delivery ###
 
 FROM nginx:stable-alpine
 
+# copy django static files
+RUN mkdir -p /usr/share/nginx/html/static
+COPY django/static/ /usr/share/nginx/static/
 # remove the default NGINX website
 RUN rm -rf /usr/share/nginx/html/*
 
 # copy the compiled app from the builder image to the NGINX public folder
-COPY --from=builder /app/angular-app/dist/out /usr/share/nginx/html
+COPY --from=builder /app/angular-app/dist/out/ /usr/share/nginx/html/
 
 # copy the NGINX configuration file to the Docker
-COPY angular/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY angular/nginx/ /etc/nginx/conf.d/
 
+EXPOSE 80
+EXPOSE 443
+
+CMD ["nginx", "-g", "daemon off;"]

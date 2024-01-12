@@ -2,7 +2,7 @@ import { UserProfile } from './../../node_modules/auth0/dist/cjs/management/__ge
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
-import { environment } from 'src/app/environment/environment';
+import { environment } from 'src/environment/environment';
 
 (window as any).global = window;
 

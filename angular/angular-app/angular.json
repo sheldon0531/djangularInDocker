@@ -17,7 +17,7 @@
         "build": {
           "builder": "@ngx-env/builder:browser",
           "options": {
-            "outputPath": "dist/angular-app",
+            "outputPath": "dist/out",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -36,6 +36,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environment/environment.ts",
+                  "with": "src/environment/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",

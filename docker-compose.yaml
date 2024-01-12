@@ -11,16 +11,18 @@ services:
     container_name: dj
     networks: 
       - bridge
-    environment:
-      - DJANGO_SETTINGS=dev
+#    environment:
+#      - DJANGO_SETTINGS=dev
     build:
       context: .
       dockerfile: ./django/Dockerfile
-    command: python manage.py runserver 0.0.0.0:80
+    restart: always
+#    command: python manage.py runserver 0.0.0.0:80
     volumes:
       - ./django:/code
-    ports:
-      - 80:80
+      - uwsgi-socket:/tmp/
+#    ports:
+#      - 8080:8080
     depends_on:
       - db
 
@@ -29,11 +31,18 @@ services:
     build: 
       context: .
       dockerfile: ./angular/Dockerfile
+    restart: always
     networks:
       - bridge
     ports:
-      - 8080:80
+      - 80:80
+      - 443:443
+    volumes:
+      - uwsgi-socket:/tmp
 
 networks:
   bridge:
     driver: bridge
+
+volumes:
+  uwsgi-socket:
