@@ -1,12 +1,39 @@
-version: "3"
+version: "3.8"
 
 services:
+  reverse-proxy:
+    image: jwilder/nginx-proxy
+    container_name: reverse-proxy
+    restart: unless-stopped
+    networks:
+      - bridge
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./r-proxy/nginx/certs:/etc/nginx/certs:ro
+      - ./r-proxy/nginx/vhost.d:/etc/nginx/vhost.d
+      - ./r-proxy/nginx/html:/usr/share/nginx/html
+      - ./r-proxy/nginx/conf.d:/etc/nginx/conf.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    restart: unless-stopped
+    volumes_from: 
+      - reverse-proxy
+    volumes:
+      - ./r-proxy/nginx/certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
   db:
     image: postgres
     networks: 
       - bridge
     environment:
       POSTGRES_PASSWORD: ${DB_PASS}
+
   dj:
     container_name: dj
     networks: 
@@ -16,7 +43,7 @@ services:
     build:
       context: .
       dockerfile: ./django/Dockerfile
-    restart: always
+    restart: unless-stopped
 #    command: python manage.py runserver 0.0.0.0:80
     volumes:
       - ./django:/code
@@ -31,12 +58,16 @@ services:
     build: 
       context: .
       dockerfile: ./angular/Dockerfile
-    restart: always
+    restart: unless-stopped
     networks:
       - bridge
-    ports:
-      - 80:80
-      - 443:443
+    environment:
+      LETSENCRYPT_EMAIL: sheldon0531@gmail.com
+      LETSENCRYPT_HOST: sheldon0531.asuscomm.com
+      VIRTUAL_HOST: sheldon0531.asuscomm.com
+#    ports:
+#      - 80:80
+#      - 443:443
     volumes:
       - uwsgi-socket:/tmp
 

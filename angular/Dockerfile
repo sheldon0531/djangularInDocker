@@ -25,19 +25,18 @@ RUN npm run build
 
 FROM nginx:stable-alpine
 
-# copy django static files
-RUN mkdir -p /usr/share/nginx/html/static
-COPY django/static/ /usr/share/nginx/static/
 # remove the default NGINX website
 RUN rm -rf /usr/share/nginx/html/*
+
+# copy django static files
+RUN mkdir -p /usr/share/nginx/html/static
+COPY django/static/ /usr/share/nginx/html/static/
 
 # copy the compiled app from the builder image to the NGINX public folder
 COPY --from=builder /app/angular-app/dist/out/ /usr/share/nginx/html/
 
 # copy the NGINX configuration file to the Docker
-COPY angular/nginx/ /etc/nginx/conf.d/
-
-EXPOSE 80
-EXPOSE 443
+COPY angular/nginx/mysite.conf /etc/nginx/conf.d/
+COPY angular/nginx/nginx.conf /etc/nginx/nginx.conf
 
 CMD ["nginx", "-g", "daemon off;"]

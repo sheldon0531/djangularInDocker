@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv('DJ_SECRET')
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '*',
+    'sheldon0531.asuscomm.com',
 ]
 
 
@@ -103,6 +103,15 @@ REST_FRAMEWORK = {
        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
 }
+# Security Settings
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARD_PROTO", "https")
+# SECURE_SSL_REDIRECT = True # Use Nginx to redirect
+SESSION_COOKIE_SECURE = True # 僅通過https傳輸cookie
+# CSRF_COOKIE_SECURE = True # 僅通過https傳輸cookie
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True # 嚴格要求使用https協議傳輸
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_SECONDS = 60
+# SECURE_CONTENT_TYPE_NOSNIFF = True # 防止瀏覽器猜測內容類型
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
